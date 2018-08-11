@@ -1,0 +1,14 @@
+{
+  "name": "transform-csv",
+  "version": "1.0.0",
+  "description": "Finds duplicate sets and creates new .csv files with new appended unique ids",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app"
+  },
+  "author": "Joseph Chambers <joseph@michael-chambers.com>",
+  "license": "ISC",
+  "dependencies": {
+    "fast-csv": "^2.4.1"
+  }
+}

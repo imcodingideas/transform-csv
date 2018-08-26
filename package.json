@@ -4,7 +4,7 @@
   "description": "Finds duplicate sets and creates new .csv files with new appended unique ids",
   "main": "app.js",
   "scripts": {
-    "start": "node app"
+    "start": "node app.js"
   },
   "author": "Joseph Chambers <joseph@michael-chambers.com>",
   "license": "ISC",

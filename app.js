@@ -7,27 +7,35 @@ csv
   .fromStream(stream)
   .on('data', data => {
     var group = process.argv[2];
+    var yearRange;
     if (group === undefined) {
       console.log('usage: npm start <param>');
       console.log('i.e: npm start all');
       process.exit(0);
     } else if (group === 'all') {
+      let dete = data;
       group = data[0].substr(0, data[0].indexOf('-'));
-      if (group === null) {
-        process.exit(0);
+      yearRange = dete[12].substr(0, data[12].indexOf(' '));
+      if (!yearRange.includes('-')) {
+        yearRange = null;
       }
     }
-    if (data[0].indexOf(group + '-') > -1) {
+    if (data[0].indexOf(group + '-') > -1 && yearRange !== null) {
       const toAdd = {
         group,
+        yearRange,
         entries: []
       };
       data[0] += '-' + Math.floor(Math.random() * (999 - 100 + 1) + 100);
-      if (!results.some(e => e.group === group)) {
+      // if group doesnt exist in final results
+      if (!results.some(e => e.group === group && e.yearRange === yearRange)) {
         toAdd.entries.push(data);
         results.push(toAdd);
       } else {
-        results.find(e => e.group === group).entries.push(data);
+        // if group does exist in final results
+        results
+          .find(e => e.group === group && e.yearRange === yearRange)
+          .entries.push(data);
       }
     }
   })
@@ -54,13 +62,17 @@ csv
       }
     };
     results.forEach(element => {
+      const dir = './results';
+
+      if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir);
+      }
+      const filename = `${element.group}_${element.yearRange}.csv`;
       csv
-        .writeToPath(`${element.group}.csv`, element.entries, opt)
+        .writeToPath(`${dir}/${filename}`, element.entries, opt)
         .on('finish', () => {
           console.log(
-            `${element.group}.csv with ${
-              element.entries.length
-            } elements created!`
+            `${filename} with ${element.entries.length} elements created!`
           );
         });
     });

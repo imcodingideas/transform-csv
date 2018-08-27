@@ -13,9 +13,12 @@ csv
       console.log('i.e: npm start all');
       process.exit(0);
     } else if (group === 'all') {
-      let dete = data;
       group = data[0].substr(0, data[0].indexOf('-'));
-      yearRange = dete[12].substr(0, data[12].indexOf(' '));
+      yearRange = data[12]
+        .replace(new RegExp(' ', 'g'), '_')
+        .replace(new RegExp('/', 'g'), '')
+        .toLowerCase();
+      // ignore condition
       if (!yearRange.includes('-')) {
         yearRange = null;
       }
